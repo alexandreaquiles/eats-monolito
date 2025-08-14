@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,19 +16,21 @@ import br.com.caelum.eats.dto.MediaAvaliacoesDto;
 import br.com.caelum.eats.model.Avaliacao;
 import br.com.caelum.eats.model.Restaurante;
 import br.com.caelum.eats.repository.AvaliacaoRepository;
-import lombok.AllArgsConstructor;
 
 @RestController
 public class AvaliacaoController {
 
-	@Autowired
-	private AvaliacaoRepository repo;
+	private final AvaliacaoRepository repo;
+
+	public AvaliacaoController(AvaliacaoRepository repo) {
+		this.repo = repo;
+	}
 
 	@GetMapping("/restaurantes/{restauranteId}/avaliacoes")
 	public List<AvaliacaoDto> listaDoRestaurante(@PathVariable("restauranteId") Long restauranteId) {
 		Restaurante restaurante = new Restaurante();
 		restaurante.setId(restauranteId);
-		return repo.findAllByRestaurante(restaurante).stream().map(a -> new AvaliacaoDto(a))
+		return repo.findAllByRestaurante(restaurante).stream().map(AvaliacaoDto::new)
 				.collect(Collectors.toList());
 	}
 

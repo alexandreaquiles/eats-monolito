@@ -1,7 +1,9 @@
 package br.com.caelum.eats.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.io.Serial;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Role implements GrantedAuthority {
 
-	private static final long serialVersionUID = 1L;
+	@Serial private static final long serialVersionUID = 1L;
 
 	public static enum ROLES {
 		ADMIN, PARCEIRO;

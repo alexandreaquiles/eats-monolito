@@ -2,6 +2,7 @@ package br.com.caelum.eats.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
@@ -66,13 +67,13 @@ public class DistanciaService {
 
 	private BigDecimal calculaDistancia() {
 		//simulaDemora();
-		return new BigDecimal(Math.random()*15);
+		return new BigDecimal(ThreadLocalRandom.current().nextDouble()*15);
 	}
 
 	@SuppressWarnings("unused")
 	private void simulaDemora() {
 		//simula demora de 10s a 20s
-		long demora = (long) (Math.random()*10000+10000);
+		long demora = (long) (ThreadLocalRandom.current().nextDouble()*10000+10000);
 		try {
 			Thread.sleep(demora);
 		} catch (InterruptedException e) {

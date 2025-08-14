@@ -4,63 +4,52 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import br.com.caelum.eats.model.Role;
 import br.com.caelum.eats.service.JwtAuthenticationEntryPoint;
 import br.com.caelum.eats.service.JwtAuthenticationFilter;
-import br.com.caelum.eats.service.UserService;
 import lombok.AllArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-	private UserService userService;
-	private JwtAuthenticationFilter jwtAuthenticationFilter;
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	private PasswordEncoder passwordEncoder;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				.antMatchers("/restaurantes/**", "/pedidos/**", "/pagamentos/**", "/tipos-de-cozinha/**", "/formas-de-pagamento/**").permitAll()
-				.antMatchers("/auth/**").permitAll()
-				.antMatchers("/actuator/**").permitAll()
-				.antMatchers("/admin/**").hasRole(Role.ROLES.ADMIN.name())
-				.antMatchers(HttpMethod.POST, "/parceiros/restaurantes").permitAll()
-				.antMatchers("/parceiros/restaurantes/do-usuario/{username}").access("@restauranteAuthorizationService.checaUsername(authentication,#username)")
-				.antMatchers("/parceiros/restaurantes/{restauranteId}/**").access("@restauranteAuthorizationService.checaId(authentication,#restauranteId)")
-				.antMatchers("/parceiros/**").hasRole(Role.ROLES.PARCEIRO.name())
-				.anyRequest().authenticated()
-				.and().cors()
-				.and().csrf().disable()
-				.formLogin().disable()
-				.httpBasic().disable()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-				.exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint);
-	}
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/restaurantes/**", "/pedidos/**", "/pagamentos/**", "/tipos-de-cozinha/**", "/formas-de-pagamento/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/actuator/**").permitAll()
+                .requestMatchers("/admin/**").hasRole(Role.ROLES.ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/parceiros/restaurantes").permitAll()
+                .requestMatchers("/parceiros/restaurantes/do-usuario/{username}").access(new WebExpressionAuthorizationManager("@restauranteAuthorizationService.checaUsername(authentication,#username)"))
+                .requestMatchers("/parceiros/restaurantes/{restauranteId}/**").access(new WebExpressionAuthorizationManager("@restauranteAuthorizationService.checaId(authentication,#restauranteId)"))
+                .requestMatchers("/parceiros/**").hasRole(Role.ROLES.PARCEIRO.name())
+                .anyRequest().authenticated()
+            )
+            .cors(cors -> cors.disable())
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(exc -> exc.authenticationEntryPoint(this.jwtAuthenticationEntryPoint));
+        return http.build();
+    }
 
-	@Override
-	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(this.userService).passwordEncoder(this.passwordEncoder);
-	}
-
-	@Override
-	@Bean(BeanIds.AUTHENTICATION_MANAGER)
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
-	
-
-
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 }
