@@ -1,56 +1,59 @@
 # Eats-Monolito
 
-This is a monolithic implementation of a food delivery service called "Eats".
+Esta é uma implementação monolítica de um serviço de entrega de comida chamado "Eats".
 
-## About the Project
+## Sobre o Projeto
 
-This project is a Java Spring Boot application that provides a REST API for a food delivery service. It uses Maven for dependency management and includes dependencies for Spring Web, Spring Data JPA, Spring Security, and Flyway for database migrations. The application is configured to connect to a MySQL database.
+Este projeto é uma aplicação Java Spring Boot que fornece uma API REST para um serviço de entrega de comida. Ele utiliza o Maven para gerenciamento de dependências e inclui dependências para Spring Web, Spring Data JPA, Spring Security e Flyway para as migrações do banco de dados. A aplicação está configurada para se conectar a um banco de dados MySQL.
 
-## Getting Started
+## Começando
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+Estas instruções te ajudarão a obter uma cópia do projeto e executá-lo em sua máquina local para fins de desenvolvimento e teste.
 
-### Prerequisites
+### Pré-requisitos
 
-*   Java 1.8
-*   Maven
-*   Docker
+  * Java 1.8
+  * Maven
+  * Docker
 
-### Installation
+### Instalação
 
-1.  **Clone the repository:**
+1.  **Clone o repositório:**
+
     ```bash
     git clone https://github.com/alexandreaquiles/eats-monolito.git
     ```
 
-2.  **Start the database:**
+2.  **Inicie o banco de dados:**
+
     ```bash
     docker-compose up -d
     ```
 
-3.  **Run the application:**
+3.  **Execute a aplicação:**
+
     ```bash
     ./mvnw spring-boot:run
     ```
 
-The application will be available at `http://localhost:8080`.
+A aplicação estará disponível em `http://localhost:8080`.
 
-## Usage
+## Uso
 
-Once the application is running, you can use a tool like `curl` or Postman to interact with the API.
+Assim que a aplicação estiver em execução, você pode usar uma ferramenta como o `curl` ou o Postman para interagir com a API.
 
-## API Endpoints
+## Endpoints da API
 
-The main API endpoints are:
+Os principais endpoints da API são:
 
-*   `/auth` - Authentication
-*   `/avaliacoes` - Reviews
-*   `/cardapios` - Menus
-*   `/categorias-do-cardapio` - Menu Categories
-*   `/formas-de-pagamento` - Payment Methods
-*   `/horarios-de-funcionamento` - Opening Hours
-*   `/itens-do-cardapio` - Menu Items
-*   `/pagamentos` - Payments
-*   `/pedidos` - Orders
-*   `/restaurantes` - Restaurants
-*   `/tipos-de-cozinha` - Cuisine Types
+  * `/auth` - Autenticação
+  * `/avaliacoes` - Avaliações
+  * `/cardapios` - Cardápios
+  * `/categorias-do-cardapio` - Categorias do Cardápio
+  * `/formas-de-pagamento` - Formas de Pagamento
+  * `/horarios-de-funcionamento` - Horários de Funcionamento
+  * `/itens-do-cardapio` - Itens do Cardápio
+  * `/pagamentos` - Pagamentos
+  * `/pedidos` - Pedidos
+  * `/restaurantes` - Restaurantes
+  * `/tipos-de-cozinha` - Tipos de Cozinha
