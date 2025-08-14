@@ -29,6 +29,7 @@ public class DistanciaService {
 	private RestauranteRepository repo;
 
 	public List<RestauranteComDistanciaDto> restaurantesMaisProximosAoCep(String cep) {
+		System.out.println("Restaurante mais proximos ao cep: " + cep);
 		List<Restaurante> restaurantes = repo.findAllByAprovado(true, LIMIT).getContent();
 		return calculaDistanciaParaOsRestaurantes(restaurantes, cep);
 	}

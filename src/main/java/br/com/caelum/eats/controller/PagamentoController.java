@@ -2,6 +2,7 @@ package br.com.caelum.eats.controller;
 
 import java.net.URI;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +24,12 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/pagamentos")
-@AllArgsConstructor
 public class PagamentoController {
 
+	@Autowired
 	private PagamentoRepository pagamentoRepo;
+
+	@Autowired
 	private PedidoRepository pedidoRepo;
 
 	@GetMapping("/{id}")

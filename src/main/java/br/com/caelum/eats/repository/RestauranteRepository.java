@@ -15,11 +15,11 @@ import br.com.caelum.eats.model.User;
 
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
-	List<Restaurante> findAllByAprovado(boolean aprovado);
+	List<Restaurante> findAllByAprovado(Boolean aprovado);
 
-	Page<Restaurante> findAllByAprovadoAndTipoDeCozinha(boolean aprovado, TipoDeCozinha tipo, Pageable limit);
+	Page<Restaurante> findAllByAprovadoAndTipoDeCozinha(Boolean aprovado, TipoDeCozinha tipo, Pageable limit);
 
-	Page<Restaurante> findAllByAprovado(boolean aprovado, Pageable limit);
+	Page<Restaurante> findAllByAprovado(Boolean aprovado, Pageable limit);
 
 	Restaurante findByUser(User user);
 

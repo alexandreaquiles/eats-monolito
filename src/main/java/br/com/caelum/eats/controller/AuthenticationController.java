@@ -1,5 +1,6 @@
 package br.com.caelum.eats.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,11 +22,15 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/auth")
-@AllArgsConstructor
 public class AuthenticationController {
 
+	@Autowired
 	private AuthenticationManager authManager;
+
+	@Autowired
 	private JwtTokenManager jwtTokenManager;
+
+	@Autowired
 	private UserService userService;
 
 	@PostMapping

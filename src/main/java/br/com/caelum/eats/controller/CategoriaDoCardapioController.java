@@ -1,5 +1,6 @@
 package br.com.caelum.eats.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,9 +14,9 @@ import br.com.caelum.eats.repository.CategoriaDoCardapioRepository;
 import lombok.AllArgsConstructor;
 
 @RestController
-@AllArgsConstructor
 public class CategoriaDoCardapioController {
 
+	@Autowired
 	private CategoriaDoCardapioRepository repo;
 
 	@GetMapping("/restaurantes/{idRestaurante}/cardapio/{idCardapio}/categoria/{idCategoria}")
